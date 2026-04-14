@@ -1,6 +1,7 @@
 /**
  * Single source of truth for site identity and URLs.
  * Set NEXT_PUBLIC_SITE_URL in production (no trailing slash), e.g. https://yoursite.com
+ * GitHub Actions sets this automatically when deploying to GitHub Pages.
  */
 function resolveSiteUrl(): string {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
@@ -12,6 +13,10 @@ function resolveSiteUrl(): string {
 export const site = {
   url: resolveSiteUrl(),
   name: "Tejas",
+  /** Public path under `/public` — used in the hero */
+  headshot: "/Headshot.png",
+  /** Shown beside the About section blurb */
+  aboutLogo: "/gt.jpg",
   /** Used as default title; child routes can use template in root metadata */
   title: "Tejas Vermani — Portfolio",
   titleTemplate: "%s | Tejas Vermani",

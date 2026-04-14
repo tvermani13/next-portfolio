@@ -13,7 +13,7 @@ export function Skills() {
   );
 
   return (
-    <Section id="skills" eyebrow="Skills" title="Tools and practices">
+    <Section id="skills" eyebrow="Skills" title="Tools and Technologies">
       <div className="grid gap-8 sm:grid-cols-2">
         {Object.entries(byCategory).map(([category, items]) => (
           <div key={category}>
