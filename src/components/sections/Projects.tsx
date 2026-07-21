@@ -1,97 +1,89 @@
 import Image from "next/image";
-import Link from "next/link";
 
 import { projects } from "@/content/config/projects";
-import { Section } from "@/components/ui/Section";
-import { Card } from "@/components/ui/Card";
-import { cn } from "@/lib/utils";
 
 const external = { target: "_blank" as const, rel: "noopener noreferrer" };
 
-export function Projects() {
-  const ordered = [...projects].sort(
-    (a, b) => Number(b.featured) - Number(a.featured),
-  );
-
+function SimulatorVisual() {
   return (
-    <Section id="projects" eyebrow="Projects" title="Selected work">
-      <ul className="grid gap-6 sm:grid-cols-2">
-        {ordered.map((project) => (
-          <li key={project.slug}>
-            <Card className="flex h-full flex-col overflow-hidden p-0">
-              {project.image ? (
-                <div className="relative aspect-[16/10] w-full bg-muted">
+    <div className="simulator-visual" aria-hidden="true">
+      <div className="simulator-heading">
+        <span>SELL</span>
+        <span>SBLOC</span>
+      </div>
+      <div className="simulator-bars">
+        <span style={{ height: "42%" }} />
+        <span style={{ height: "66%" }} />
+        <span style={{ height: "54%" }} />
+        <span style={{ height: "82%" }} />
+        <span style={{ height: "71%" }} />
+      </div>
+      <p>Compare capital paths over time →</p>
+    </div>
+  );
+}
+
+export function Projects() {
+  return (
+    <section id="work" className="page-section work-section" aria-labelledby="work-title">
+      <div className="site-shell">
+        <header className="section-heading">
+          <p>01 / Selected work</p>
+          <div>
+            <h2 id="work-title">Built to answer real questions.</h2>
+            <p>
+              Products and experiments where engineering, data, and financial thinking
+              meet.
+            </p>
+          </div>
+        </header>
+
+        <div className="project-grid">
+          {projects.map((project) => (
+            <article
+              key={project.slug}
+              className={`project-card${project.featured ? " project-card-featured" : ""}`}
+            >
+              <div className={`project-visual project-visual-${project.visual}`}>
+                {project.image ? (
                   <Image
                     src={project.image}
-                    alt={`Screenshot for ${project.title}`}
+                    alt={`Preview for ${project.title}`}
                     fill
-                    className="object-cover"
-                    sizes="(min-width: 1024px) 40vw, 100vw"
+                    sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
                   />
-                </div>
-              ) : (
-                <div
-                  className={cn(
-                    "aspect-[16/10] w-full bg-gradient-to-br from-muted to-muted/50",
-                  )}
-                  aria-hidden
-                />
-              )}
-              <div className="flex flex-1 flex-col p-6">
-                <div className="flex items-start justify-between gap-2">
-                  <h3 className="text-lg font-semibold text-foreground">
-                    {project.title}
-                  </h3>
-                  {project.featured && (
-                    <span className="shrink-0 rounded-full bg-foreground/10 px-2 py-0.5 text-xs font-medium text-foreground">
-                      Featured
-                    </span>
-                  )}
-                </div>
-                <p className="mt-2 flex-1 text-sm text-muted-foreground">
-                  {project.summary}
-                </p>
-                <ul className="mt-4 flex flex-wrap gap-2">
+                ) : (
+                  <SimulatorVisual />
+                )}
+                <span className="project-number">{project.number}</span>
+              </div>
+
+              <div className="project-body">
+                <p className="project-kicker">{project.kicker}</p>
+                <h3>{project.title}</h3>
+                <p className="project-summary">{project.summary}</p>
+                <ul className="tag-list" aria-label="Technologies used">
                   {project.tags.map((tag) => (
-                    <li key={tag}>
-                      <span className="text-xs text-muted-foreground">#{tag}</span>
-                    </li>
+                    <li key={tag}>{tag}</li>
                   ))}
                 </ul>
-                <div className="mt-4 flex flex-wrap gap-3 text-sm font-medium">
+                <div className="project-links">
                   {project.links.demo && (
-                    <Link
-                      href={project.links.demo}
-                      className="text-foreground underline-offset-4 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-                      {...external}
-                    >
-                      Live demo
-                    </Link>
+                    <a href={project.links.demo} {...external}>
+                      View live <span aria-hidden="true">↗</span>
+                    </a>
                   )}
                   {project.links.github && (
-                    <Link
-                      href={project.links.github}
-                      className="text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-                      {...external}
-                    >
-                      Source
-                    </Link>
-                  )}
-                  {project.links.paper && (
-                    <Link
-                      href={project.links.paper}
-                      className="text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm"
-                      {...external}
-                    >
-                      Paper
-                    </Link>
+                    <a href={project.links.github} {...external}>
+                      Source <span aria-hidden="true">↗</span>
+                    </a>
                   )}
                 </div>
               </div>
-            </Card>
-          </li>
-        ))}
-      </ul>
-    </Section>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

@@ -1,13 +1,29 @@
-export type Skill = {
-  name: string;
-  category?: string;
+export type SkillGroup = {
+  label: string;
+  skills: string[];
 };
 
-export const skills: Skill[] = [
-  { name: "TypeScript", category: "Languages" },
-  { name: "React / Next.js", category: "Frameworks" },
-  { name: "Node.js", category: "Runtime" },
-  { name: "PostgreSQL", category: "Data" },
-  { name: "System design", category: "Practices" },
-  { name: "Accessibility", category: "Practices" },
+export const skillGroups: SkillGroup[] = [
+  {
+    label: "Languages",
+    skills: ["Python", "Java", "C++", "C", "TypeScript", "JavaScript", "SQL"],
+  },
+  {
+    label: "ML / AI",
+    skills: ["PyTorch", "Hugging Face Transformers", "scikit-learn", "Amazon Bedrock"],
+  },
+  {
+    label: "Systems & Data",
+    skills: [
+      "AWS",
+      "Docker",
+      "Kubernetes",
+      "Kafka",
+      "Spring Boot",
+      "PostgreSQL",
+      "MongoDB",
+      "OpenMPI",
+      "Git",
+    ],
+  },
 ];

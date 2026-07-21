@@ -1,40 +1,33 @@
-/**
- * Single source of truth for site identity and URLs.
- * Set NEXT_PUBLIC_SITE_URL in production (no trailing slash), e.g. https://yoursite.com
- * GitHub Actions sets this automatically when deploying to GitHub Pages.
- */
 function resolveSiteUrl(): string {
   const fromEnv = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
-  if (fromEnv) return fromEnv;
-  if (process.env.VERCEL_URL) return `https://${process.env.VERCEL_URL}`;
-  return "http://localhost:3000";
+  return fromEnv || "https://tejasvermani.com";
 }
 
 export const site = {
   url: resolveSiteUrl(),
-  name: "Tejas",
-  /** Public path under `/public` — used in the hero */
+  name: "Tejas Vermani",
+  shortName: "TV",
   headshot: "/Headshot.png",
-  /** Shown beside the About section blurb */
-  aboutLogo: "/gt.jpg",
-  /** Used as default title; child routes can use template in root metadata */
-  title: "Tejas Vermani — Portfolio",
+  aboutImage: "/Me3.jpeg",
+  title: "Tejas Vermani — Software Development Engineer at Amazon",
   titleTemplate: "%s | Tejas Vermani",
   description:
-    "Portfolio and professional profile — projects, experience, and contact.",
+    "Amazon SDE I and Georgia Tech alumnus building useful systems across software, AI, finance, and the web.",
   defaultOgImage: "/og.png",
+  location: "Atlanta · New York",
+  availability: "Building at the edge of software, ML, and finance",
   links: {
     github: "https://github.com/tvermani13",
     linkedin: "https://www.linkedin.com/in/tejasvermani",
+    twitter: "https://twitter.com/tvermani13",
     email: "tejasvermani@gmail.com",
+    resume: "/Resume.pdf",
   },
   nav: [
-    { label: "About", href: "#about" },
+    { label: "Work", href: "#work" },
     { label: "Experience", href: "#experience" },
-    { label: "Timeline", href: "#timeline" },
-    { label: "Skills", href: "#skills" },
-    { label: "Projects", href: "#projects" },
-    { label: "Contact", href: "#contact" },
+    { label: "About", href: "#about" },
+    { label: "Pulse", href: "#pulse" },
   ],
 } as const;
 
