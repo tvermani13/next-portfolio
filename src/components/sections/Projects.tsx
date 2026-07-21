@@ -31,10 +31,7 @@ export function Projects() {
           <p>01 / Selected work</p>
           <div>
             <h2 id="work-title">Built to answer real questions.</h2>
-            <p>
-              Products and experiments where engineering, data, and financial thinking
-              meet.
-            </p>
+            <p>Selected products and experiments across software, data, and finance.</p>
           </div>
         </header>
 

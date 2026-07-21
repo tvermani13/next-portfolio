@@ -26,9 +26,8 @@ export function Hero() {
           </div>
           <h1 id="hero-title">I build systems that make hard ideas useful.</h1>
           <p className="hero-intro">
-            I&apos;m Tejas—an SDE I at Amazon and Georgia Tech alumnus working across
-            production software, machine learning, quantitative finance, and full-stack
-            products.
+            I&apos;m Tejas—an SDE at Amazon and Georgia Tech alumnus working across
+            production software, machine learning, and quantitative finance.
           </p>
           <div className="hero-actions">
             <a className="button button-primary" href="#work">

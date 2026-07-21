@@ -6,7 +6,7 @@ export function Skills() {
       <div className="site-shell capability-grid">
         <div className="capability-intro">
           <p>What I build with</p>
-          <span>Tools change. Systems thinking travels.</span>
+          <span>Languages, ML, and systems tooling I use regularly.</span>
         </div>
         {skillGroups.map((group) => (
           <div className="skill-group" key={group.label}>

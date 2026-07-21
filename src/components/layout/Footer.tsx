@@ -9,7 +9,6 @@ export function Footer() {
         <p>
           © {new Date().getFullYear()} {site.name}
         </p>
-        <p className="footer-note">Designed as a living record, not a résumé graveyard.</p>
         <div className="footer-links">
           <a href={site.links.github} {...external}>
             GitHub ↗

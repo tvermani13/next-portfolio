@@ -26,8 +26,7 @@ export function About() {
 
           <div className="about-copy">
             <p className="about-lead">
-              My favorite work starts with a messy question and ends with something
-              people can actually use.
+              I like turning messy questions into things people can actually use.
             </p>
             <p>
               I earned both my Master&apos;s in Machine Learning and B.S. in Computer Science
@@ -36,9 +35,8 @@ export function About() {
               secure data systems, and quantitative tools.
             </p>
             <p>
-              Away from the terminal, I follow markets, experiment with local AI
-              hardware, and look for reasons to get outside. The through-line is the
-              same: go deep, understand the system, then make it clearer.
+              Away from the terminal, I follow markets, tinker with local AI hardware,
+              and get outside when I can.
             </p>
             <div className="about-now">
               <span>Currently focused on</span>

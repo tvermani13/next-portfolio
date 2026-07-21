@@ -41,10 +41,7 @@ export async function Pulse() {
           <p>04 / The personal feed</p>
           <div>
             <h2 id="pulse-title">What&apos;s moving off the clock.</h2>
-            <p>
-              A small live window into the music and movement behind the work. Data
-              refreshes automatically when the integrations are connected.
-            </p>
+            <p>A live feed of music and activity, updated automatically once connected.</p>
           </div>
         </header>
 

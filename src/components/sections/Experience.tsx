@@ -10,10 +10,7 @@ export function Experience() {
           <p>02 / Experience</p>
           <div>
             <h2 id="experience-title">Production-minded from day one.</h2>
-            <p>
-              I like ambitious systems, clear ownership, and work that survives contact
-              with real users.
-            </p>
+            <p>Ambitious systems, clear ownership, work that holds up in production.</p>
           </div>
         </header>
 
@@ -29,7 +26,7 @@ export function Experience() {
                   src={job.image}
                   alt={job.imageAlt ?? `${job.company} logo`}
                   fill
-                  sizes="64px"
+                  sizes="88px"
                 />
               </div>
               <div className="experience-main">
