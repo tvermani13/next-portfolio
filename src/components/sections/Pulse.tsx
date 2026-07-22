@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-import { getAppleMusicActivity, getGoogleHealthActivity } from "@/lib/activity";
+import { getGoogleHealthActivity, getMusicActivity } from "@/lib/activity";
 
 const external = { target: "_blank" as const, rel: "noopener noreferrer" };
 
@@ -23,8 +23,8 @@ function PulseStatus({ connected, label }: { connected: boolean; label: string }
 }
 
 export async function Pulse() {
-  const [appleMusic, googleHealth] = await Promise.all([
-    getAppleMusicActivity(),
+  const [music, googleHealth] = await Promise.all([
+    getMusicActivity(),
     getGoogleHealthActivity(),
   ]);
 
@@ -48,18 +48,18 @@ export async function Pulse() {
         <div className="pulse-grid">
           <article className="pulse-card">
             <header>
-              <span>Apple Music</span>
+              <span>Apple Music · via Last.fm</span>
               <PulseStatus
-                connected={appleMusic.connected}
-                label={appleMusic.connected ? "Recent" : "API ready"}
+                connected={music.connected}
+                label={music.connected ? (music.nowPlaying ? "Playing" : "Recent") : "API ready"}
               />
             </header>
             <div className="music-media">
-              {appleMusic.albumArt ? (
+              {music.albumArt ? (
                 <Image
                   className="music-art"
-                  src={appleMusic.albumArt}
-                  alt={`Album artwork for ${appleMusic.title}`}
+                  src={music.albumArt}
+                  alt={`Album artwork for ${music.title}`}
                   width={96}
                   height={96}
                   unoptimized
@@ -71,11 +71,17 @@ export async function Pulse() {
               )}
             </div>
             <div className="pulse-card-copy">
-              <p>{appleMusic.connected ? "Recently played" : "Listening soon"}</p>
-              <h3>{appleMusic.title}</h3>
-              <span>{appleMusic.artist}</span>
+              <p>
+                {music.connected
+                  ? music.nowPlaying
+                    ? "Now playing"
+                    : "Recently played"
+                  : "Listening soon"}
+              </p>
+              <h3>{music.title}</h3>
+              <span>{music.artist}</span>
             </div>
-            <ActivityLink href={appleMusic.url}>Open in Apple Music</ActivityLink>
+            <ActivityLink href={music.url}>View on Last.fm</ActivityLink>
           </article>
 
           <article className="pulse-card">
@@ -100,8 +106,12 @@ export async function Pulse() {
                 <dd>{googleHealth.activeTime}</dd>
               </div>
               <div>
-                <dt>This month</dt>
-                <dd>{googleHealth.connected ? `${googleHealth.monthDistanceMiles.toFixed(1)} mi` : "—"}</dd>
+                <dt>Week steps</dt>
+                <dd>
+                  {googleHealth.connected && googleHealth.weekSteps > 0
+                    ? googleHealth.weekSteps.toLocaleString("en-US")
+                    : "—"}
+                </dd>
               </div>
             </dl>
             <ActivityLink>Synced from Google Health</ActivityLink>
@@ -126,7 +136,7 @@ export async function Pulse() {
           </article>
         </div>
 
-        {!appleMusic.connected && !googleHealth.connected && (
+        {!music.connected && !googleHealth.connected && (
           <p className="integration-note">
             The live cards are running in preview mode. We&apos;ll connect your private API
             credentials together during deployment.

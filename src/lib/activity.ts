@@ -1,10 +1,11 @@
-export type AppleMusicActivity = {
+export type MusicActivity = {
   connected: boolean;
   title: string;
   artist: string;
   album?: string;
   albumArt?: string;
   url?: string;
+  nowPlaying: boolean;
 };
 
 export type GoogleHealthActivity = {
@@ -14,18 +15,16 @@ export type GoogleHealthActivity = {
   distanceMiles: number;
   activeTime: string;
   date?: string;
-  monthDistanceMiles: number;
-  monthActivities: number;
+  weekSteps: number;
 };
 
-type AppleMusicTrack = {
-  attributes?: {
-    name?: string;
-    artistName?: string;
-    albumName?: string;
-    url?: string;
-    artwork?: { url?: string };
-  };
+type LastFmTrack = {
+  name?: string;
+  artist?: { "#text"?: string } | string;
+  album?: { "#text"?: string } | string;
+  image?: Array<{ "#text"?: string; size?: string }>;
+  url?: string;
+  "@attr"?: { nowplaying?: string };
 };
 
 type GoogleHealthExercise = {
@@ -44,10 +43,11 @@ type GoogleHealthDataPoint = {
   exercise?: GoogleHealthExercise;
 };
 
-const appleMusicFallback: AppleMusicActivity = {
+const musicFallback: MusicActivity = {
   connected: false,
   title: "Listening signal ready",
-  artist: "Apple Music connects when we launch",
+  artist: "Connect Last.fm to share Apple Music activity",
+  nowPlaying: false,
 };
 
 const googleHealthFallback: GoogleHealthActivity = {
@@ -56,49 +56,66 @@ const googleHealthFallback: GoogleHealthActivity = {
   sport: "Google Health connects when we launch",
   distanceMiles: 0,
   activeTime: "—",
-  monthDistanceMiles: 0,
-  monthActivities: 0,
+  weekSteps: 0,
 };
 
-function formatAppleArtwork(url?: string) {
-  return url?.replace("{w}", "300").replace("{h}", "300");
+type CivilDate = { year: number; month: number; day: number };
+
+type StepsRollupPoint = {
+  steps?: { countSum?: string };
+};
+
+function lastFmText(value?: { "#text"?: string } | string) {
+  return typeof value === "string" ? value : value?.["#text"];
 }
 
-export async function getAppleMusicActivity(): Promise<AppleMusicActivity> {
-  const developerToken = process.env.APPLE_MUSIC_DEVELOPER_TOKEN;
-  const userToken = process.env.APPLE_MUSIC_USER_TOKEN;
+function lastFmArtwork(images?: LastFmTrack["image"]) {
+  return [...(images ?? [])]
+    .reverse()
+    .find((image) => Boolean(image["#text"]))?.["#text"];
+}
 
-  if (!developerToken || !userToken) return appleMusicFallback;
+export async function getMusicActivity(): Promise<MusicActivity> {
+  const username = process.env.LASTFM_USERNAME;
+  const apiKey = process.env.LASTFM_API_KEY;
+
+  if (!username || !apiKey) return musicFallback;
 
   try {
-    const response = await fetch(
-      "https://api.music.apple.com/v1/me/recent/played/tracks?types=songs&limit=1",
-      {
-        headers: {
-          Authorization: `Bearer ${developerToken}`,
-          "Music-User-Token": userToken,
-        },
-        next: { revalidate: 900 },
-      },
-    );
+    const parameters = new URLSearchParams({
+      method: "user.getrecenttracks",
+      user: username,
+      api_key: apiKey,
+      format: "json",
+      limit: "1",
+    });
+    const response = await fetch(`https://ws.audioscrobbler.com/2.0/?${parameters}`, {
+      next: { revalidate: 300 },
+    });
 
-    if (!response.ok) return appleMusicFallback;
-    const payload = (await response.json()) as { data?: AppleMusicTrack[] };
-    const attributes = payload.data?.[0]?.attributes;
-    if (!attributes?.name || !attributes.artistName) {
-      return { ...appleMusicFallback, connected: true };
+    if (!response.ok) return musicFallback;
+    const payload = (await response.json()) as {
+      recenttracks?: { track?: LastFmTrack[] | LastFmTrack };
+    };
+    const tracks = payload.recenttracks?.track;
+    const latest = Array.isArray(tracks) ? tracks[0] : tracks;
+    const artist = lastFmText(latest?.artist);
+
+    if (!latest?.name || !artist) {
+      return { ...musicFallback, connected: true };
     }
 
     return {
       connected: true,
-      title: attributes.name,
-      artist: attributes.artistName,
-      album: attributes.albumName,
-      albumArt: formatAppleArtwork(attributes.artwork?.url),
-      url: attributes.url,
+      title: latest.name,
+      artist,
+      album: lastFmText(latest.album),
+      albumArt: lastFmArtwork(latest.image),
+      url: latest.url,
+      nowPlaying: latest["@attr"]?.nowplaying === "true",
     };
   } catch {
-    return appleMusicFallback;
+    return musicFallback;
   }
 }
 
@@ -147,6 +164,51 @@ function formatExerciseType(value?: string) {
     .join(" ");
 }
 
+function toCivilDate(date: Date): CivilDate {
+  return {
+    year: date.getUTCFullYear(),
+    month: date.getUTCMonth() + 1,
+    day: date.getUTCDate(),
+  };
+}
+
+async function getWeekSteps(accessToken: string) {
+  const now = new Date();
+  const weekStart = new Date(now);
+  weekStart.setUTCDate(now.getUTCDate() - 6);
+  weekStart.setUTCHours(0, 0, 0, 0);
+
+  const endExclusive = new Date(now);
+  endExclusive.setUTCDate(now.getUTCDate() + 1);
+  endExclusive.setUTCHours(0, 0, 0, 0);
+
+  const response = await fetch(
+    "https://health.googleapis.com/v4/users/me/dataTypes/steps/dataPoints:dailyRollUp",
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        range: {
+          start: { date: toCivilDate(weekStart) },
+          end: { date: toCivilDate(endExclusive) },
+        },
+        windowSizeDays: 1,
+      }),
+      next: { revalidate: 900 },
+    },
+  );
+
+  if (!response.ok) return 0;
+  const payload = (await response.json()) as { rollupDataPoints?: StepsRollupPoint[] };
+  return (payload.rollupDataPoints ?? []).reduce((sum, point) => {
+    const count = Number.parseInt(point.steps?.countSum ?? "0", 10);
+    return sum + (Number.isFinite(count) ? count : 0);
+  }, 0);
+}
+
 export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
   try {
     const accessToken = await getGoogleHealthAccessToken();
@@ -158,22 +220,38 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
 
     const parameters = new URLSearchParams({
       pageSize: "25",
-      filter: `exercise.interval.start_time >= "${monthStart.toISOString()}"`,
+      filter: `exercise.interval.civil_start_time >= "${monthStart
+        .toISOString()
+        .slice(0, 10)}"`,
     });
-    const response = await fetch(
-      `https://health.googleapis.com/v4/users/me/dataTypes/exercise/dataPoints?${parameters.toString()}`,
-      {
-        headers: { Authorization: `Bearer ${accessToken}` },
-        next: { revalidate: 900 },
-      },
-    );
 
-    if (!response.ok) return googleHealthFallback;
-    const payload = (await response.json()) as { dataPoints?: GoogleHealthDataPoint[] };
-    const exercises = (payload.dataPoints ?? [])
+    const [exerciseResponse, weekSteps] = await Promise.all([
+      fetch(
+        `https://health.googleapis.com/v4/users/me/dataTypes/exercise/dataPoints?${parameters.toString()}`,
+        {
+          headers: { Authorization: `Bearer ${accessToken}` },
+          next: { revalidate: 900 },
+        },
+      ),
+      getWeekSteps(accessToken),
+    ]);
+
+    if (!exerciseResponse.ok) {
+      return weekSteps > 0
+        ? {
+            ...googleHealthFallback,
+            connected: true,
+            title: "Moving this week",
+            sport: "Google Health",
+            weekSteps,
+          }
+        : googleHealthFallback;
+    }
+
+    const payload = (await exerciseResponse.json()) as { dataPoints?: GoogleHealthDataPoint[] };
+    const latest = (payload.dataPoints ?? [])
       .map((point) => point.exercise)
-      .filter((exercise): exercise is GoogleHealthExercise => Boolean(exercise));
-    const latest = exercises[0];
+      .find((exercise): exercise is GoogleHealthExercise => Boolean(exercise));
 
     if (!latest) {
       return {
@@ -181,13 +259,10 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
         connected: true,
         title: "No workouts yet this month",
         sport: "Google Health",
+        weekSteps,
       };
     }
 
-    const totalDistanceMillimeters = exercises.reduce(
-      (sum, exercise) => sum + (exercise.metricsSummary?.distanceMillimeters ?? 0),
-      0,
-    );
     const latestDistanceMillimeters = latest.metricsSummary?.distanceMillimeters ?? 0;
 
     return {
@@ -201,8 +276,7 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
         latest.interval?.endTime,
       ),
       date: latest.interval?.startTime,
-      monthDistanceMiles: totalDistanceMillimeters / 1_609_344,
-      monthActivities: exercises.length,
+      weekSteps,
     };
   } catch {
     return googleHealthFallback;

@@ -1,7 +1,7 @@
 # Tejas Vermani — Portfolio
 
 A personal portfolio built with Next.js, TypeScript, and Tailwind CSS. The site is
-project-first, responsive, and prepared for live Apple Music and Google Health cards.
+project-first, responsive, and prepared for live music and Google Health cards.
 
 ## Local development
 
@@ -19,8 +19,8 @@ never be prefixed with `NEXT_PUBLIC_` or committed.
 
 ## Activity integrations
 
-- Apple Music uses a developer token and Music User Token to retrieve the most recently
-  played track through the Apple Music API.
+- Apple Music listening is surfaced through Last.fm scrobbles using the public
+  `user.getRecentTracks` endpoint and a server-side API key.
 - Google Health uses Google OAuth 2.0 with the
   `googlehealth.activity_and_fitness.readonly` scope to retrieve recent exercises and
   current-month workout distance.
