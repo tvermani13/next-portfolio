@@ -1,3 +1,5 @@
+import { withBasePath } from "@/lib/paths";
+
 export type Project = {
   slug: string;
   number: string;
@@ -34,7 +36,7 @@ export const projects: Project[] = [
     kicker: "Interactive data story",
     summary:
       "A geographic exploration of how Spotify audio features, popularity, and economic indicators move across countries.",
-    image: "/dva.png",
+    image: withBasePath("/dva.png"),
     visual: "music",
     tags: ["Next.js", "D3", "Spotify data", "Visualization"],
     links: {
@@ -50,7 +52,7 @@ export const projects: Project[] = [
     kicker: "Machine learning product",
     summary:
       "A model-backed application for exploring borrower risk and making the factors behind a prediction easier to understand.",
-    image: "/credit.jpg",
+    image: withBasePath("/credit.jpg"),
     visual: "credit",
     tags: ["Python", "Machine learning", "Streamlit"],
     links: {
@@ -66,7 +68,7 @@ export const projects: Project[] = [
     kicker: "Financial systems experiment",
     summary:
       "A liquidity optimization experiment that applies neural-network techniques to questions about cash, income, and allocation.",
-    image: "/Bank.png",
+    image: withBasePath("/Bank.png"),
     visual: "network",
     tags: ["Python", "Neural networks", "Finance"],
     links: { github: "https://github.com/tvermani13/liquidity-optimizer" },

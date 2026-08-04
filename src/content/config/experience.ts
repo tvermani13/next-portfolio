@@ -1,3 +1,5 @@
+import { withBasePath } from "@/lib/paths";
+
 export type Experience = {
   company: string;
   role: string;
@@ -15,7 +17,7 @@ export const experience: Experience[] = [
   {
     company: "Amazon",
     role: "Software Development Engineer I",
-    image: "/amazon.png",
+    image: withBasePath("/amazon.png"),
     location: "New York, NY",
     startDate: "Jul 2026",
     endDate: "Present",
@@ -27,7 +29,7 @@ export const experience: Experience[] = [
   {
     company: "VIVA Finance",
     role: "Software Engineering Intern",
-    image: "/viva.png",
+    image: withBasePath("/viva.png"),
     location: "Atlanta, GA",
     startDate: "Aug 2025",
     endDate: "Dec 2025",
@@ -38,7 +40,7 @@ export const experience: Experience[] = [
   {
     company: "Amazon",
     role: "Software Development Engineering Intern",
-    image: "/amazon.png",
+    image: withBasePath("/amazon.png"),
     location: "New York, NY",
     startDate: "May 2025",
     endDate: "Aug 2025",
@@ -49,7 +51,7 @@ export const experience: Experience[] = [
   {
     company: "CVS Health",
     role: "Software Engineering Intern",
-    image: "/cvs.jpg",
+    image: withBasePath("/cvs.jpg"),
     location: "New York, NY",
     startDate: "May 2024",
     endDate: "Aug 2024",
