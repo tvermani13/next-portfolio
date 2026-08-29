@@ -6,7 +6,7 @@ export function Contact() {
   return (
     <section id="contact" className="contact-section" aria-labelledby="contact-title">
       <div className="site-shell contact-grid">
-        <p>05 / Say hello</p>
+        <p>04 / Say hello</p>
         <div>
           <h2 id="contact-title">Have a hard problem worth making useful?</h2>
           <a className="contact-link" href={`mailto:${site.links.email}`}>

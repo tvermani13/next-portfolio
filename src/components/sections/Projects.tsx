@@ -23,6 +23,53 @@ function SimulatorVisual() {
   );
 }
 
+function CreditVisual() {
+  return (
+    <div className="abstract-visual" aria-hidden="true">
+      <div className="simulator-heading">
+        <span>RISK</span>
+        <span>SCORE</span>
+      </div>
+      <div className="credit-bars">
+        <span style={{ width: "72%" }} />
+        <span style={{ width: "48%" }} />
+        <span style={{ width: "61%" }} />
+        <span style={{ width: "34%" }} />
+      </div>
+      <p>Borrower factors, made readable.</p>
+    </div>
+  );
+}
+
+function NetworkVisual() {
+  return (
+    <div className="abstract-visual" aria-hidden="true">
+      <div className="simulator-heading">
+        <span>CASH</span>
+        <span>ALLOC</span>
+      </div>
+      <div className="network-nodes">
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+        <i />
+      </div>
+      <p>Income, liquidity, allocation.</p>
+    </div>
+  );
+}
+
+function ProjectVisual({ visual }: { visual: (typeof projects)[number]["visual"] }) {
+  if (visual === "credit") return <CreditVisual />;
+  if (visual === "network") return <NetworkVisual />;
+  return <SimulatorVisual />;
+}
+
 export function Projects() {
   return (
     <section id="work" className="page-section work-section" aria-labelledby="work-title">
@@ -36,49 +83,55 @@ export function Projects() {
         </header>
 
         <div className="project-grid">
-          {projects.map((project) => (
-            <article
-              key={project.slug}
-              className={`project-card${project.featured ? " project-card-featured" : ""}`}
-            >
-              <div className={`project-visual project-visual-${project.visual}`}>
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={`Preview for ${project.title}`}
-                    fill
-                    sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
-                  />
-                ) : (
-                  <SimulatorVisual />
-                )}
-                <span className="project-number">{project.number}</span>
-              </div>
+          {projects.map((project) => {
+            const hasLinks = Boolean(project.links.demo || project.links.github);
 
-              <div className="project-body">
-                <p className="project-kicker">{project.kicker}</p>
-                <h3>{project.title}</h3>
-                <p className="project-summary">{project.summary}</p>
-                <ul className="tag-list" aria-label="Technologies used">
-                  {project.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-                <div className="project-links">
-                  {project.links.demo && (
-                    <a href={project.links.demo} {...external}>
-                      View live <span aria-hidden="true">↗</span>
-                    </a>
+            return (
+              <article
+                key={project.slug}
+                className={`project-card${project.featured ? " project-card-featured" : ""}`}
+              >
+                <div className={`project-visual project-visual-${project.visual}`}>
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={`Preview for ${project.title}`}
+                      fill
+                      sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
+                    />
+                  ) : (
+                    <ProjectVisual visual={project.visual} />
                   )}
-                  {project.links.github && (
-                    <a href={project.links.github} {...external}>
-                      Source <span aria-hidden="true">↗</span>
-                    </a>
+                  <span className="project-number">{project.number}</span>
+                </div>
+
+                <div className="project-body">
+                  <p className="project-kicker">{project.kicker}</p>
+                  <h3>{project.title}</h3>
+                  <p className="project-summary">{project.summary}</p>
+                  <ul className="tag-list" aria-label="Technologies used">
+                    {project.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                  {hasLinks && (
+                    <div className="project-links">
+                      {project.links.demo && (
+                        <a href={project.links.demo} {...external}>
+                          View live <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                      {project.links.github && (
+                        <a href={project.links.github} {...external}>
+                          Source <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                    </div>
                   )}
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

@@ -13,9 +13,6 @@ const nextConfig: NextConfig = {
   output: 'export',
   images: {
     unoptimized: true,
-    remotePatterns: [
-      { protocol: "https", hostname: "**.mzstatic.com" },
-    ],
   },
   turbopack: { root: projectRoot },
   basePath,

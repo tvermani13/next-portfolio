@@ -16,7 +16,7 @@ export const site = {
   description:
     "Amazon SDE I and Georgia Tech alumnus building useful systems across software, AI, finance, and the web.",
   defaultOgImage: withBasePath("/og.png"),
-  location: "Atlanta · New York",
+  location: "New York",
   availability: "Building at the edge of software, ML, and finance",
   links: {
     github: "https://github.com/tvermani13",
@@ -29,7 +29,6 @@ export const site = {
     { label: "Work", href: "#work" },
     { label: "Experience", href: "#experience" },
     { label: "About", href: "#about" },
-    { label: "Pulse", href: "#pulse" },
   ],
 } as const;
 

@@ -52,11 +52,9 @@ export const projects: Project[] = [
     kicker: "Machine learning product",
     summary:
       "A model-backed application for exploring borrower risk and making the factors behind a prediction easier to understand.",
-    image: withBasePath("/credit.jpg"),
     visual: "credit",
     tags: ["Python", "Machine learning", "Streamlit"],
     links: {
-      github: "https://github.com/Predicting-Credit-Risk/predicting-credit-risk",
       demo: "https://predicting-credit-risk-jysg5sq5rq6dbfuznc5cqz.streamlit.app",
     },
     featured: false,
@@ -68,10 +66,9 @@ export const projects: Project[] = [
     kicker: "Financial systems experiment",
     summary:
       "A liquidity optimization experiment that applies neural-network techniques to questions about cash, income, and allocation.",
-    image: withBasePath("/Bank.png"),
     visual: "network",
     tags: ["Python", "Neural networks", "Finance"],
-    links: { github: "https://github.com/tvermani13/liquidity-optimizer" },
+    links: {},
     featured: false,
   },
 ];
