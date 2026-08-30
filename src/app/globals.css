@@ -449,6 +449,20 @@ a {
   background: var(--text-primary);
 }
 
+.project-visual-vault .simulator-bars span:nth-child(4),
+.project-visual-orchestrator .simulator-bars span:nth-child(4),
+.project-visual-market .simulator-bars span:nth-child(4),
+.project-visual-eval .simulator-bars span:nth-child(4) {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.project-visual-vault .simulator-bars span:nth-child(3),
+.project-visual-orchestrator .simulator-bars span:nth-child(5),
+.project-visual-market .simulator-bars span:nth-child(2),
+.project-visual-eval .simulator-bars span:nth-child(4) {
+  background: var(--text-primary);
+}
+
 .simulator-visual > p {
   margin: 0;
   color: var(--text-secondary);

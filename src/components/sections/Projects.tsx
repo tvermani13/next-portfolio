@@ -4,21 +4,26 @@ import { projects } from "@/content/config/projects";
 
 const external = { target: "_blank" as const, rel: "noopener noreferrer" };
 
-function SimulatorVisual() {
+const visualCopy = {
+  simulator: { left: "SELL", right: "SBLOC", footer: "Compare capital paths over time →", bars: [42, 66, 54, 82, 71] },
+  vault: { left: "ACCOUNTS", right: "PLAN", footer: "Aggregate → understand → act", bars: [70, 46, 84, 58, 76] },
+  orchestrator: { left: "ROUTE", right: "EVAL", footer: "Policies, approvals, and traces", bars: [38, 61, 78, 52, 88] },
+  market: { left: "SIGNAL", right: "SOURCE", footer: "Research without invented values", bars: [55, 73, 44, 67, 81] },
+  eval: { left: "BASELINE", right: "PLANNER", footer: "Quality up; latency measured", bars: [49, 62, 57, 76, 69] },
+} as const;
+
+function ProjectVisual({ visual }: Readonly<{ visual: keyof typeof visualCopy }>) {
+  const copy = visualCopy[visual];
   return (
     <div className="simulator-visual" aria-hidden="true">
       <div className="simulator-heading">
-        <span>SELL</span>
-        <span>SBLOC</span>
+        <span>{copy.left}</span>
+        <span>{copy.right}</span>
       </div>
       <div className="simulator-bars">
-        <span style={{ height: "42%" }} />
-        <span style={{ height: "66%" }} />
-        <span style={{ height: "54%" }} />
-        <span style={{ height: "82%" }} />
-        <span style={{ height: "71%" }} />
+        {copy.bars.map((height, index) => <span key={`${visual}-${index}`} style={{ height: `${height}%` }} />)}
       </div>
-      <p>Compare capital paths over time →</p>
+      <p>{copy.footer}</p>
     </div>
   );
 }
@@ -53,7 +58,7 @@ export function Projects() {
                       sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
                     />
                   ) : (
-                    <SimulatorVisual />
+                    <ProjectVisual visual={project.visual} />
                   )}
                   <span className="project-number">{project.number}</span>
                 </div>
