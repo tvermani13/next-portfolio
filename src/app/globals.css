@@ -913,15 +913,6 @@ a {
   font-weight: 500;
 }
 
-.integration-note {
-  margin: 18px 0 0;
-  color: var(--text-tertiary);
-  font-family: var(--font-mono), ui-monospace, monospace;
-  font-size: 0.6875rem;
-  text-align: left;
-  letter-spacing: 0.04em;
-}
-
 /* Contact */
 
 .contact-section {

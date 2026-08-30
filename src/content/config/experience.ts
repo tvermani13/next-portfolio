@@ -22,8 +22,8 @@ export const experience: Experience[] = [
     startDate: "Jul 2026",
     endDate: "Present",
     summary:
-      "Building and operating production software full-time after completing graduate work in machine learning and a previous summer at Amazon.",
-    highlights: ["Full-time SDE I", "Production software engineering"],
+      "SDE I in New York. Converted from the internship that shipped a Bedrock data-retrieval agent for Creator Assistant.",
+    highlights: ["Creator Assistant internship conversion", "Creator Social Share Services"],
     current: true,
   },
   {
@@ -39,14 +39,33 @@ export const experience: Experience[] = [
   },
   {
     company: "Amazon",
-    role: "Software Development Engineering Intern",
+    role: "Software Development Engineer Intern",
     image: withBasePath("/amazon.png"),
     location: "New York, NY",
     startDate: "May 2025",
     endDate: "Aug 2025",
     summary:
-      "Built a data-retrieval agent for Creator Assistant with Amazon Bedrock, Java, Spring Boot, and internal reporting APIs.",
-    highlights: ["Prompt-injection-resistant tool calling", "Agent quality and latency evaluation"],
+      "Built a data-retrieval agent for Creator Assistant with Amazon Bedrock, Java, Spring Boot, and internal reporting APIs. Used Return Control so tool calls execute in the application rather than the model, and automated evals for accuracy, relevance, latency, and tool selection.",
+    highlights: [
+      "Return Control against prompt injection",
+      "Evals: accuracy, relevance, latency, tool selection",
+    ],
+  },
+  {
+    company: "GT Investments Management Club",
+    role: "Founder & Chief Investment Officer",
+    image: withBasePath("/gt.jpg"),
+    imageAlt: "Georgia Tech seal",
+    location: "Atlanta, GA",
+    startDate: "Aug 2023",
+    endDate: "Aug 2025",
+    summary:
+      "Founded and led a student-managed fund with $100k+ in privately raised capital. Authored the investment strategy, managed sector leads, and built quantitative tools for the team.",
+    highlights: [
+      "$100k+ student-managed fund",
+      "Authored strategy and managed sector leads",
+      "Quantitative investment tools",
+    ],
   },
   {
     company: "CVS Health",

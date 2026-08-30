@@ -20,7 +20,7 @@ export function Contact() {
               LinkedIn
             </a>
             <a href={site.links.resume} {...external}>
-              Résumé
+              Resume
             </a>
           </div>
         </div>

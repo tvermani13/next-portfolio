@@ -36,49 +36,55 @@ export function Projects() {
         </header>
 
         <div className="project-grid">
-          {projects.map((project) => (
-            <article
-              key={project.slug}
-              className={`project-card${project.featured ? " project-card-featured" : ""}`}
-            >
-              <div className={`project-visual project-visual-${project.visual}`}>
-                {project.image ? (
-                  <Image
-                    src={project.image}
-                    alt={`Preview for ${project.title}`}
-                    fill
-                    sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
-                  />
-                ) : (
-                  <SimulatorVisual />
-                )}
-                <span className="project-number">{project.number}</span>
-              </div>
+          {projects.map((project) => {
+            const hasLinks = Boolean(project.links.demo || project.links.github);
 
-              <div className="project-body">
-                <p className="project-kicker">{project.kicker}</p>
-                <h3>{project.title}</h3>
-                <p className="project-summary">{project.summary}</p>
-                <ul className="tag-list" aria-label="Technologies used">
-                  {project.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-                <div className="project-links">
-                  {project.links.demo && (
-                    <a href={project.links.demo} {...external}>
-                      View live <span aria-hidden="true">↗</span>
-                    </a>
+            return (
+              <article
+                key={project.slug}
+                className={`project-card${project.featured ? " project-card-featured" : ""}`}
+              >
+                <div className={`project-visual project-visual-${project.visual}`}>
+                  {project.image ? (
+                    <Image
+                      src={project.image}
+                      alt={`Preview for ${project.title}`}
+                      fill
+                      sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
+                    />
+                  ) : (
+                    <SimulatorVisual />
                   )}
-                  {project.links.github && (
-                    <a href={project.links.github} {...external}>
-                      Source <span aria-hidden="true">↗</span>
-                    </a>
+                  <span className="project-number">{project.number}</span>
+                </div>
+
+                <div className="project-body">
+                  <p className="project-kicker">{project.kicker}</p>
+                  <h3>{project.title}</h3>
+                  <p className="project-summary">{project.summary}</p>
+                  <ul className="tag-list" aria-label="Technologies used">
+                    {project.tags.map((tag) => (
+                      <li key={tag}>{tag}</li>
+                    ))}
+                  </ul>
+                  {hasLinks && (
+                    <div className="project-links">
+                      {project.links.demo && (
+                        <a href={project.links.demo} {...external}>
+                          View live <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                      {project.links.github && (
+                        <a href={project.links.github} {...external}>
+                          Source <span aria-hidden="true">↗</span>
+                        </a>
+                      )}
+                    </div>
                   )}
                 </div>
-              </div>
-            </article>
-          ))}
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

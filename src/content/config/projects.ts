@@ -56,7 +56,6 @@ export const projects: Project[] = [
     visual: "credit",
     tags: ["Python", "Machine learning", "Streamlit"],
     links: {
-      github: "https://github.com/Predicting-Credit-Risk/predicting-credit-risk",
       demo: "https://predicting-credit-risk-jysg5sq5rq6dbfuznc5cqz.streamlit.app",
     },
     featured: false,
@@ -71,7 +70,7 @@ export const projects: Project[] = [
     image: withBasePath("/Bank.png"),
     visual: "network",
     tags: ["Python", "Neural networks", "Finance"],
-    links: { github: "https://github.com/tvermani13/liquidity-optimizer" },
+    links: {},
     featured: false,
   },
 ];

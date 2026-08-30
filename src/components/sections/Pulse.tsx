@@ -41,7 +41,7 @@ export async function Pulse() {
           <p>04 / The personal feed</p>
           <div>
             <h2 id="pulse-title">What&apos;s moving off the clock.</h2>
-            <p>A live feed of music and activity, updated automatically once connected.</p>
+            <p>A live feed of music and activity.</p>
           </div>
         </header>
 
@@ -51,11 +51,11 @@ export async function Pulse() {
               <span>Apple Music · via Last.fm</span>
               <PulseStatus
                 connected={music.connected}
-                label={music.connected ? (music.nowPlaying ? "Playing" : "Recent") : "API ready"}
+                label={music.connected ? (music.nowPlaying ? "Playing" : "Recent") : "Idle"}
               />
             </header>
             <div className="music-media">
-              {music.albumArt ? (
+              {music.connected && music.albumArt ? (
                 <Image
                   className="music-art"
                   src={music.albumArt}
@@ -76,12 +76,14 @@ export async function Pulse() {
                   ? music.nowPlaying
                     ? "Now playing"
                     : "Recently played"
-                  : "Listening soon"}
+                  : "Listening"}
               </p>
-              <h3>{music.title}</h3>
-              <span>{music.artist}</span>
+              <h3>{music.connected ? music.title : "—"}</h3>
+              {music.connected ? <span>{music.artist}</span> : null}
             </div>
-            <ActivityLink href={music.url}>View on Last.fm</ActivityLink>
+            <ActivityLink href={music.connected ? music.url : undefined}>
+              View on Last.fm
+            </ActivityLink>
           </article>
 
           <article className="pulse-card">
@@ -120,14 +122,14 @@ export async function Pulse() {
           <article className="pulse-card">
             <header>
               <span>Now</span>
-              <span>Summer 2026</span>
+              <span>Fall 2026</span>
             </header>
             <div className="pulse-card-copy">
               <p>Current direction</p>
-              <h3>Engineering at Amazon, full-time.</h3>
+              <h3>SDE I at Amazon in New York.</h3>
               <span>
-                Georgia Tech alumnus now building and operating production software as
-                an SDE I at Amazon.
+                Georgia Tech M.S. CS (Machine Learning) alum, focused on reliable AI,
+                quantitative systems, and useful interfaces.
               </span>
             </div>
             <a className="pulse-link" href="#contact">
@@ -135,13 +137,6 @@ export async function Pulse() {
             </a>
           </article>
         </div>
-
-        {!music.connected && !googleHealth.connected && (
-          <p className="integration-note">
-            The live cards are running in preview mode. We&apos;ll connect your private API
-            credentials together during deployment.
-          </p>
-        )}
       </div>
     </section>
   );
