@@ -17,15 +17,15 @@ export const projects: Project[] = [
   {
     slug: "real-estate-simulator",
     number: "01",
-    title: "Real Estate SBLOC Simulator",
-    kicker: "Quantitative decision tool",
+    title: "Hearthline",
+    kicker: "Sell vs SBLOC decision model",
     summary:
       "A full-stack simulator that compares selling equities with borrowing against them for a real-estate down payment—modeling taxes, opportunity cost, cash flow, and margin-call risk.",
     visual: "simulator",
     tags: ["Next.js", "TypeScript", "FastAPI", "Monte Carlo"],
     links: {
       github: "https://github.com/tvermani13/real-estate-simulator",
-      demo: "https://real-estate-simulator-self.vercel.app",
+      demo: "https://real-estate-simulator-self.vercel.app/demo",
     },
     featured: true,
   },
