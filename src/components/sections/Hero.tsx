@@ -34,7 +34,7 @@ export function Hero() {
               Explore the work <span aria-hidden="true">↓</span>
             </a>
             <a className="button button-quiet" href={site.links.resume} {...external}>
-              Résumé <span aria-hidden="true">↗</span>
+              Resume <span aria-hidden="true">↗</span>
             </a>
           </div>
         </div>

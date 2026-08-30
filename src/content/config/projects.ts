@@ -52,6 +52,7 @@ export const projects: Project[] = [
     kicker: "Machine learning product",
     summary:
       "A model-backed application for exploring borrower risk and making the factors behind a prediction easier to understand.",
+    image: withBasePath("/credit.jpg"),
     visual: "credit",
     tags: ["Python", "Machine learning", "Streamlit"],
     links: {
@@ -66,6 +67,7 @@ export const projects: Project[] = [
     kicker: "Financial systems experiment",
     summary:
       "A liquidity optimization experiment that applies neural-network techniques to questions about cash, income, and allocation.",
+    image: withBasePath("/Bank.png"),
     visual: "network",
     tags: ["Python", "Neural networks", "Finance"],
     links: {},
