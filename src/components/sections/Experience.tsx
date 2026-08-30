@@ -9,7 +9,7 @@ export function Experience() {
         <header className="section-heading">
           <p>02 / Experience</p>
           <div>
-            <h2 id="experience-title">Production-minded from day one.</h2>
+            <h2 id="experience-title">Production-minded:</h2>
             <p>Ambitious systems, clear ownership, work that holds up in production.</p>
           </div>
         </header>

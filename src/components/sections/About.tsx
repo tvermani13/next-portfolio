@@ -9,7 +9,7 @@ export function About() {
         <header className="section-heading">
           <p>03 / About</p>
           <div>
-            <h2 id="about-title">Equal parts engineer and investigator.</h2>
+            <h2 id="about-title">Both an engineer and investigator.</h2>
           </div>
         </header>
 

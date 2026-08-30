@@ -22,8 +22,8 @@ export const experience: Experience[] = [
     startDate: "Jul 2026",
     endDate: "Present",
     summary:
-      "SDE I in New York. Converted from the internship that shipped a Bedrock data-retrieval agent for Creator Assistant, after completing an M.S. in Computer Science (Machine Learning) at Georgia Tech.",
-    highlights: ["Creator Assistant internship conversion", "M.S. CS, Machine Learning"],
+      "SDE I in New York. Converted from the internship that shipped a Bedrock data-retrieval agent for Creator Assistant.",
+    highlights: ["Creator Assistant internship conversion", "Creator Social Share Services"],
     current: true,
   },
   {
