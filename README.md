@@ -3,7 +3,7 @@
 A personal portfolio built with Next.js, TypeScript, and Tailwind CSS. The site is
 project-first, responsive, and prepared for live music and Google Health cards.
 
-Feature catalog: [`FEATURES.md`](FEATURES.md). Runbook (deploy, OAuth tokens, git-vs-production state): [`RUNBOOK.md`](RUNBOOK.md). Workspace architecture: [`../ECOSYSTEM.md`](../ECOSYSTEM.md).
+Feature catalog: [`FEATURES.md`](FEATURES.md). Runbook (deploy, OAuth tokens, git-vs-production state): [`RUNBOOK.md`](RUNBOOK.md).
 
 ## Local development
 

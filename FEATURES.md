@@ -3,7 +3,7 @@
 Last reviewed: 2026-09-28
 
 README: [`README.md`](README.md). Runbook: [`RUNBOOK.md`](RUNBOOK.md). Redesign
-spec: [`REDESIGN.md`](REDESIGN.md). Ecosystem: [`../ECOSYSTEM.md`](../ECOSYSTEM.md).
+spec: [`REDESIGN.md`](REDESIGN.md).
 
 > **This branch holds the code that is live in production.**
 > `https://tejasvermani.com/portfolio` was built on 2026-09-04 02:51 UTC by the
