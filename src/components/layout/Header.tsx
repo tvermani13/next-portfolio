@@ -1,16 +1,17 @@
 import { site } from "@/content/config/site";
+import { withBasePath } from "@/lib/paths";
 
 export function Header() {
   return (
     <header className="site-header">
       <div className="site-shell header-inner">
-        <a className="wordmark" href="#top" aria-label="Tejas Vermani, home">
+        <a className="wordmark" href={withBasePath("/")} aria-label="Tejas Vermani, home">
           {site.name}
         </a>
 
         <nav className="desktop-nav" aria-label="Primary navigation">
           {site.nav.map((item) => (
-            <a key={item.href} href={item.href}>
+            <a key={item.href} href={`${withBasePath("/")}${item.href}`}>
               {item.label}
             </a>
           ))}
