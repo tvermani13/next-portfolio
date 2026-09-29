@@ -64,3 +64,7 @@ next-env.d.ts
 
 # OS / editor junk
 *.orig
+
+# Local scratch (resume PDF render)
+output/
+tmp/
