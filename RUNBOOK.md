@@ -9,15 +9,15 @@ Last reviewed: 2026-09-28
 | Live URL | `https://tejasvermani.com/portfolio` (`/` → 307 → `/portfolio`) |
 | Host | Vercel (linked project in `.vercel/`, Git-integrated) |
 | Last production build | 2026-09-04 02:51 UTC, by the Vercel CLI from an **uncommitted** local working tree |
-| Code that is live | Branch `sync/live-site-2026-09-04` (PR #<n>) |
-| `main` on GitHub | `24d5998` (2026-08-30), older than production until PR #<n> is merged |
+| Code that is live | Branch `sync/live-site-2026-09-04` (PR #2) |
+| `main` on GitHub | `24d5998` (2026-08-30), older than production until PR #2 is merged |
 
 ## Merging the sync PR (git catches up to production)
 
-PR #<n> holds the code that is live in production. Nothing else needs to be
+PR #2 holds the code that is live in production. Nothing else needs to be
 committed first.
 
-- Merging PR #<n> into `main` redeploys production from git through the Vercel
+- Merging PR #2 into `main` redeploys production from git through the Vercel
   Git integration. Do not push to `main` directly, and do not run
   `vercel --prod`.
 - Production env vars (`STRAVA_*`, `GOOGLE_HEALTH_*`, `NEXT_PUBLIC_*`) are
