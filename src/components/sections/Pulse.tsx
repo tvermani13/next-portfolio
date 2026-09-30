@@ -1,6 +1,4 @@
-import Image from "next/image";
-
-import { getGoogleHealthActivity, getMusicActivity } from "@/lib/activity";
+import { getGoogleHealthActivity, getStravaActivity } from "@/lib/activity";
 
 const external = { target: "_blank" as const, rel: "noopener noreferrer" };
 
@@ -22,17 +20,21 @@ function PulseStatus({ connected, label }: { connected: boolean; label: string }
   );
 }
 
+function formatPulseDate(value?: string) {
+  if (!value) return null;
+  return new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
+    new Date(value),
+  );
+}
+
 export async function Pulse() {
-  const [music, googleHealth] = await Promise.all([
-    getMusicActivity(),
+  const [strava, googleHealth] = await Promise.all([
+    getStravaActivity(),
     getGoogleHealthActivity(),
   ]);
 
-  const activityDate = googleHealth.date
-    ? new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
-        new Date(googleHealth.date),
-      )
-    : "At launch";
+  const stravaDate = formatPulseDate(strava.date);
+  const googleHealthDate = formatPulseDate(googleHealth.date);
 
   return (
     <section id="pulse" className="pulse-section" aria-labelledby="pulse-title">
@@ -41,67 +43,78 @@ export async function Pulse() {
           <p>04 / The personal feed</p>
           <div>
             <h2 id="pulse-title">What&apos;s moving off the clock.</h2>
-            <p>A live feed of music and activity.</p>
+            <p>A live feed of activity.</p>
           </div>
         </header>
 
         <div className="pulse-grid">
           <article className="pulse-card">
             <header>
-              <span>Apple Music · via Last.fm</span>
+              <span>Strava</span>
               <PulseStatus
-                connected={music.connected}
-                label={music.connected ? (music.nowPlaying ? "Playing" : "Recent") : "Idle"}
+                connected={strava.connected}
+                label={strava.connected ? "Recent" : "Idle"}
               />
             </header>
-            <div className="music-media">
-              {music.connected && music.albumArt ? (
-                <Image
-                  className="music-art"
-                  src={music.albumArt}
-                  alt={`Album artwork for ${music.title}`}
-                  width={96}
-                  height={96}
-                  unoptimized
-                />
-              ) : (
-                <div className="music-art music-art-placeholder" aria-hidden="true">
-                  ♪
-                </div>
-              )}
-            </div>
             <div className="pulse-card-copy">
               <p>
-                {music.connected
-                  ? music.nowPlaying
-                    ? "Now playing"
-                    : "Recently played"
-                  : "Listening"}
+                {strava.connected
+                  ? stravaDate
+                    ? `${strava.sport} · ${stravaDate}`
+                    : strava.sport
+                  : "Latest activity"}
               </p>
-              <h3>{music.connected ? music.title : "—"}</h3>
-              {music.connected ? <span>{music.artist}</span> : null}
+              <h3>{strava.connected ? strava.title : "—"}</h3>
             </div>
-            <ActivityLink href={music.connected ? music.url : undefined}>
-              View on Last.fm
+            <dl className="activity-stats">
+              <div>
+                <dt>Distance</dt>
+                <dd>
+                  {strava.connected && strava.distanceMiles > 0
+                    ? `${strava.distanceMiles.toFixed(1)} mi`
+                    : "—"}
+                </dd>
+              </div>
+              <div>
+                <dt>Moving</dt>
+                <dd>{strava.connected ? strava.movingTime : "—"}</dd>
+              </div>
+              <div>
+                <dt>Elev</dt>
+                <dd>
+                  {strava.connected && strava.elevationFeet > 0
+                    ? `${Math.round(strava.elevationFeet)} ft`
+                    : "—"}
+                </dd>
+              </div>
+            </dl>
+            <ActivityLink href={strava.connected ? strava.url : undefined}>
+              View on Strava
             </ActivityLink>
           </article>
 
           <article className="pulse-card">
             <header>
-              <span>Google Health</span>
+              <span>Fitbit</span>
               <PulseStatus
                 connected={googleHealth.connected}
-                label={googleHealth.connected ? "Connected" : "API ready"}
+                label={googleHealth.connected ? "Connected" : "Idle"}
               />
             </header>
             <div className="pulse-card-copy">
-              <p>{googleHealth.connected ? `${googleHealth.sport} · ${activityDate}` : "Latest activity"}</p>
+              <p>
+                {googleHealth.connected
+                  ? `${googleHealth.sport} · ${googleHealthDate ?? "At launch"}`
+                  : "Latest activity"}
+              </p>
               <h3>{googleHealth.title}</h3>
             </div>
             <dl className="activity-stats">
               <div>
                 <dt>Distance</dt>
-                <dd>{googleHealth.connected ? `${googleHealth.distanceMiles.toFixed(1)} mi` : "—"}</dd>
+                <dd>
+                  {googleHealth.connected ? `${googleHealth.distanceMiles.toFixed(1)} mi` : "—"}
+                </dd>
               </div>
               <div>
                 <dt>Active</dt>
@@ -116,7 +129,7 @@ export async function Pulse() {
                 </dd>
               </div>
             </dl>
-            <ActivityLink>Synced from Google Health</ActivityLink>
+            <ActivityLink>Synced from Fitbit</ActivityLink>
           </article>
 
           <article className="pulse-card">

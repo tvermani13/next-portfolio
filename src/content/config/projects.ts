@@ -7,7 +7,8 @@ export type Project = {
   image?: string;
   visual: "simulator" | "vault" | "orchestrator" | "market" | "eval";
   tags: string[];
-  links: { github?: string; demo?: string };
+  // Every project shown on the public portfolio must be independently verifiable.
+  links: { github: string; demo?: string };
   featured: boolean;
 };
 
@@ -28,44 +29,8 @@ export const projects: Project[] = [
     featured: true,
   },
   {
-    slug: "smart-vault",
-    number: "02",
-    title: "Smart Vault",
-    kicker: "Private finance workspace",
-    summary:
-      "A personal finance workspace spanning account aggregation, transaction workflows, forward cash planning, encrypted documents, options scans, and an authenticated evidence-grounded assistant.",
-    visual: "vault",
-    tags: ["React", "TypeScript", "Node.js", "PostgreSQL"],
-    links: {},
-    featured: false,
-  },
-  {
-    slug: "life-orchestrator",
-    number: "03",
-    title: "Life Orchestrator",
-    kicker: "Agent control plane",
-    summary:
-      "A policy-aware control plane for model routing, approvals, scheduled workflows, audit logs, deterministic evals, and OpenAI-compatible clients.",
-    visual: "orchestrator",
-    tags: ["Python", "FastAPI", "Agents", "Evals"],
-    links: {},
-    featured: false,
-  },
-  {
-    slug: "kinscape",
-    number: "04",
-    title: "Kinscape",
-    kicker: "Market research workspace",
-    summary:
-      "A research workspace for live quotes, fundamentals, analyst activity, news, screeners, and account-owned watchlists with honest unavailable states.",
-    visual: "market",
-    tags: ["Next.js", "TypeScript", "PostgreSQL", "Market data"],
-    links: {},
-    featured: false,
-  },
-  {
     slug: "tokensmith-query-decomp",
-    number: "05",
+    number: "02",
     title: "TokenSmith Query Decomposition",
     kicker: "Planner and evaluation harness",
     summary:

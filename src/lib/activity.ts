@@ -18,6 +18,17 @@ export type GoogleHealthActivity = {
   weekSteps: number;
 };
 
+export type StravaActivity = {
+  connected: boolean;
+  title: string;
+  sport: string;
+  distanceMiles: number;
+  movingTime: string;
+  elevationFeet: number;
+  date?: string;
+  url?: string;
+};
+
 type LastFmTrack = {
   name?: string;
   artist?: { "#text"?: string } | string;
@@ -53,10 +64,30 @@ const musicFallback: MusicActivity = {
 const googleHealthFallback: GoogleHealthActivity = {
   connected: false,
   title: "Fitness signal ready",
-  sport: "Google Health connects when we launch",
+  sport: "Connect Fitbit to share steps and workouts",
   distanceMiles: 0,
   activeTime: "—",
   weekSteps: 0,
+};
+
+const stravaFallback: StravaActivity = {
+  connected: false,
+  title: "Activity signal ready",
+  sport: "Connect Strava to share recent workouts",
+  distanceMiles: 0,
+  movingTime: "—",
+  elevationFeet: 0,
+};
+
+type StravaActivitySummary = {
+  id?: number;
+  name?: string;
+  sport_type?: string;
+  type?: string;
+  distance?: number;
+  moving_time?: number;
+  total_elevation_gain?: number;
+  start_date?: string;
 };
 
 type CivilDate = { year: number; month: number; day: number };
@@ -135,12 +166,86 @@ async function getGoogleHealthAccessToken() {
       refresh_token: refreshToken,
       grant_type: "refresh_token",
     }),
-    cache: "no-store",
   });
 
   if (!response.ok) return null;
   const data = (await response.json()) as { access_token?: string };
   return data.access_token ?? null;
+}
+
+function formatMovingTime(totalSeconds?: number) {
+  if (!totalSeconds || !Number.isFinite(totalSeconds) || totalSeconds <= 0) return "—";
+  const hours = Math.floor(totalSeconds / 3600);
+  const minutes = Math.round((totalSeconds % 3600) / 60);
+  return hours ? `${hours}h ${minutes}m` : `${minutes}m`;
+}
+
+function formatSportType(value?: string) {
+  if (!value) return "Workout";
+  return value.replace(/([a-z])([A-Z])/g, "$1 $2");
+}
+
+async function getStravaAccessToken() {
+  const clientId = process.env.STRAVA_CLIENT_ID;
+  const clientSecret = process.env.STRAVA_CLIENT_SECRET;
+  const refreshToken = process.env.STRAVA_REFRESH_TOKEN;
+
+  if (!clientId || !clientSecret || !refreshToken) return null;
+
+  const response = await fetch("https://www.strava.com/oauth/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      refresh_token: refreshToken,
+      grant_type: "refresh_token",
+    }),
+  });
+
+  if (!response.ok) return null;
+  const data = (await response.json()) as { access_token?: string };
+  return data.access_token ?? null;
+}
+
+export async function getStravaActivity(): Promise<StravaActivity> {
+  try {
+    const accessToken = await getStravaAccessToken();
+    if (!accessToken) return stravaFallback;
+
+    const response = await fetch(
+      "https://www.strava.com/api/v3/athlete/activities?per_page=1",
+      {
+        headers: { Authorization: `Bearer ${accessToken}` },
+      },
+    );
+
+    if (!response.ok) return stravaFallback;
+
+    const activities = (await response.json()) as StravaActivitySummary[];
+    const latest = activities[0];
+    if (!latest?.id) {
+      return {
+        ...stravaFallback,
+        connected: true,
+        title: "No recent activities",
+        sport: "Strava",
+      };
+    }
+
+    return {
+      connected: true,
+      title: latest.name || formatSportType(latest.sport_type || latest.type),
+      sport: formatSportType(latest.sport_type || latest.type),
+      distanceMiles: (latest.distance ?? 0) / 1609.344,
+      movingTime: formatMovingTime(latest.moving_time),
+      elevationFeet: (latest.total_elevation_gain ?? 0) * 3.28084,
+      date: latest.start_date,
+      url: `https://www.strava.com/activities/${latest.id}`,
+    };
+  } catch {
+    return stravaFallback;
+  }
 }
 
 function formatDuration(duration?: string, startTime?: string, endTime?: string) {
@@ -197,7 +302,6 @@ async function getWeekSteps(accessToken: string) {
         },
         windowSizeDays: 1,
       }),
-      next: { revalidate: 900 },
     },
   );
 
@@ -214,15 +318,13 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
     const accessToken = await getGoogleHealthAccessToken();
     if (!accessToken) return googleHealthFallback;
 
-    const monthStart = new Date();
-    monthStart.setUTCDate(1);
-    monthStart.setUTCHours(0, 0, 0, 0);
+    const lookback = new Date();
+    lookback.setUTCDate(lookback.getUTCDate() - 90);
+    lookback.setUTCHours(0, 0, 0, 0);
 
     const parameters = new URLSearchParams({
       pageSize: "25",
-      filter: `exercise.interval.civil_start_time >= "${monthStart
-        .toISOString()
-        .slice(0, 10)}"`,
+      filter: `exercise.interval.civil_start_time >= "${lookback.toISOString().slice(0, 10)}"`,
     });
 
     const [exerciseResponse, weekSteps] = await Promise.all([
@@ -230,7 +332,6 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
         `https://health.googleapis.com/v4/users/me/dataTypes/exercise/dataPoints?${parameters.toString()}`,
         {
           headers: { Authorization: `Bearer ${accessToken}` },
-          next: { revalidate: 900 },
         },
       ),
       getWeekSteps(accessToken),
@@ -242,7 +343,7 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
             ...googleHealthFallback,
             connected: true,
             title: "Moving this week",
-            sport: "Google Health",
+            sport: "Fitbit",
             weekSteps,
           }
         : googleHealthFallback;
@@ -257,8 +358,8 @@ export async function getGoogleHealthActivity(): Promise<GoogleHealthActivity> {
       return {
         ...googleHealthFallback,
         connected: true,
-        title: "No workouts yet this month",
-        sport: "Google Health",
+        title: "No recent workouts",
+        sport: "Fitbit",
         weekSteps,
       };
     }

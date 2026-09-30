@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "strava:auth": "node scripts/strava-oauth.mjs",
+    "health:auth": "node scripts/google-health-oauth.mjs"
   },
   "dependencies": {
     "next": "^16.2.10",
