@@ -1,71 +1,84 @@
 # next-portfolio — Feature Catalog
 
-Last reviewed: 2026-09-28
+Last reviewed: 2026-10-03
 
-README: [`README.md`](README.md). Runbook: [`RUNBOOK.md`](RUNBOOK.md). Redesign
-spec: [`REDESIGN.md`](REDESIGN.md).
+README: [`README.md`](README.md). Runbook: [`RUNBOOK.md`](RUNBOOK.md).
+Implementation handoff: [`SHOWCASE-HANDOFF.md`](SHOWCASE-HANDOFF.md).
+`REDESIGN.md` is historical design material, not the active design system.
 
-> **This branch holds the code that is live in production.**
-> `https://tejasvermani.com/portfolio` was built on 2026-09-04 02:51 UTC by the
-> Vercel CLI from the local working tree, which had never been committed. The
-> branch `sync/live-site-2026-09-04` (PR #2) preserves that code: the privacy
-> page, Strava feed, and two-project list below.
->
-> Merging PR #2 redeploys production from git through the Vercel Git
-> integration. Production env vars (`STRAVA_*`, `GOOGLE_HEALTH_*`,
-> `NEXT_PUBLIC_*`) are already present in Vercel, so no secrets need to be
-> added. Until the PR is merged, `main` is older than production. See
-> [`RUNBOOK.md`](RUNBOOK.md) for the post-merge checks.
+## Purpose and rendering
 
-## Purpose
+Personal portfolio built with Next.js App Router, TypeScript, React, and
+Tailwind CSS. `next.config.ts` enables static export. Routes and case-study
+content render at build time; no project page calls a project backend.
 
-Public personal portfolio for Tejas Vermani. It's a project-first Next.js
-static export with experience, skills, and AI-tools sections, plus an activity
-"Pulse" that fails closed to a quiet empty state. It shows only projects with a
-public source link. Not registered in Life Orchestrator.
+## Pages and sections
 
-## Sections
+| Route or section | Behavior |
+| --- | --- |
+| `/` | Hero, Selected Work, Experience, About, Skills, AI Tools, Pulse, and Contact, in that order. |
+| `/projects` | Complete, publishable case studies and eligible concise private-project cards. |
+| `/projects/[slug]` | Static detail routes generated only for complete, publishable records. Unknown or unpublished slugs are excluded. |
+| `/privacy` | Privacy policy for activity integrations. |
+| `/sitemap.xml`, `/robots.txt` | Generated metadata routes; the sitemap includes the index and published detail pages. |
 
-| Section | On homepage | Notes |
-| --- | --- | --- |
-| Hero | Yes | Identity + intro. |
-| Projects | Yes | Live list: **Hearthline** (GitHub + `https://real-estate-simulator-self.vercel.app/demo`) and **TokenSmith Query Decomposition** (GitHub). The pre-PR `main` also listed Smart Vault, Life Orchestrator, and Kinscape without links; PR #2 removes them and makes `links.github` required. |
-| Experience / About / Skills / AITools | Yes | Content config. |
-| Pulse | Yes | Live: Strava latest activity + Google Health (Fitbit) steps and exercise. Last.fm is paused (code kept, env commented out). Data is fetched **at build time**, because static export ignores `revalidate = 900`, so Pulse only changes on a rebuild. |
-| Contact | Yes | mailto + socials. |
-| Timeline | Component exists | Not mounted. |
-| `/privacy` | Separate page (live; committed in PR #2) | Privacy policy covering Strava and Google Health data, for OAuth app review. In the sitemap. |
+Selected Work order remains Hearthline, then TokenSmith Query Decomposition.
+Hearthline remains featured and retains its synthetic demo. Project source links
+are optional and use explicit availability labels. TokenSmith's source action
+is labeled as a limited public planner/evaluation snapshot.
 
-Also: skip link, header/footer, sitemap, robots, and base-path-aware links for
-`/portfolio`. Geist fonts were dropped in PR #2 (system font stacks keep the
-static export self-contained).
+## Case-study content and publication
 
-## Data and auth
+- Project metadata: `src/content/config/projects.ts`.
+- Shared content types: `src/content/projects/types.ts`.
+- Case-study narratives: `src/content/projects/caseStudies.ts`.
+- Curated private-project cards: `src/content/projects/privateProjects.ts`.
+- Publication filter and lookup functions: `src/lib/projects.ts`.
+- Shared cards, status labels, case-study sections, evidence, and email CTAs:
+  `src/components/projects/`.
 
-No durable store and no site login. Build-time server env:
-`STRAVA_CLIENT_ID|CLIENT_SECRET|REFRESH_TOKEN`,
-`GOOGLE_HEALTH_CLIENT_ID|CLIENT_SECRET|REFRESH_TOKEN`, and optionally
-`LASTFM_USERNAME|API_KEY`. Public: `NEXT_PUBLIC_SITE_URL`,
-`NEXT_PUBLIC_BASE_PATH`. OAuth helpers: `npm run strava:auth`,
-`npm run health:auth` (scripts in `scripts/`; they read credentials from env or
-`.env.local`, which is git-ignored).
+A detail page is generated only when publication is explicitly enabled and the
+problem, audience, contribution, implementation, decisions, limitations,
+lessons, evidence references, and disclosure are complete. Numerical claims
+require linked evidence. An empty evaluation array renders “Evaluation details
+are not published.” Missing screenshots are stated plainly; reviewed diagrams
+can provide the visual overview. An unavailable video is labeled without a fake
+player. Each published page has unique title, description, canonical, and Open
+Graph URL metadata, plus a project-specific `mailto:` walkthrough CTA.
 
-## Hosting
+Five concise private-project cards appear after Selected Work and on the index:
+Smart Vault, Life Orchestrator, Kinscape, Home LLM, and Prediction Arb Bot. A
+separate showcase gate requires complete copy, dated scope and role evidence,
+private-source metadata, and no demo, source link, or media. The cards qualify
+potential value and do not report adoption, production status, returns, or
+measured impact. Prediction Arb Bot is labeled inactive. Liquidity Optimizer is
+withheld. Only TokenSmith currently has a generated detail route.
 
-- **Vercel** (project linked in `.vercel/`) serves `tejasvermani.com`;
-  `vercel.json` redirects `/` → `/portfolio`. The project is Git-integrated:
-  pushes to `main` deploy to production, and pushes to other branches create
-  preview deployments only.
-- The GitHub Pages workflow (`.github/workflows/deploy-github-pages.yml`)
-  failed on every push because Pages isn't enabled on the repo. It is removed
-  in PR #2; Vercel is the only host.
-- Public GitHub repo `tvermani13/next-portfolio`. `tvermani13/portfolio` is the
-  archived predecessor.
+Unpublished records are not confidentiality controls. Keep all repository
+content and assets safe to publish because the portfolio repository is public.
+Never add project source, private data, credentials, internal infrastructure
+identifiers, or unreviewed media.
 
-## Gaps
+## Activity integrations
 
-- Until PR #2 is merged, git is behind production (see the note at the top).
-- `output/` and `tmp/` (resume PDF render scratch) are git-ignored as of
-  PR #2 and excluded from Vercel via `.vercelignore`.
-- Pulse freshness depends on rebuilds; nothing rebuilds on a schedule.
-- `REDESIGN.md` ("Quiet Precision") is a spec, not a maintained design system.
+- **Strava:** latest activity through OAuth; data is fetched during the build.
+- **Google Health / Fitbit:** recent exercise, steps, and monthly distance;
+  data is fetched during the build.
+- **Last.fm:** paused; code remains, environment variables are commented out.
+- The Pulse section fails closed when provider data is unavailable. Static
+  export does not provide scheduled refreshing; `revalidate` does not refresh
+  the exported site.
+
+## Hosting and known limits
+
+Vercel Git integration publishes the public `main` branch at
+`https://tejasvermani.com/portfolio`; other branches receive preview deployments.
+The existing production deployment and publishing branch were checked on
+October 3 before the authorized showcase merge. A successful merge alone does
+not prove that a deployment is ready; verify the deployment and live content.
+See [`RUNBOOK.md`](RUNBOOK.md) for publication checks.
+
+There are no approved screenshots or videos for the case studies currently in
+the catalog. The TokenSmith aggregate reuses one 19-question benchmark across
+three passes and reports limitations alongside its metrics. Public repository
+access was verified; an open-source license was not verified.
