@@ -12,6 +12,15 @@ export function Contact() {
           <a className="contact-link" href={`mailto:${site.links.email}`}>
             {site.links.email} <span aria-hidden="true">↗</span>
           </a>
+          <p className="contact-walkthrough-copy">
+            For a technical walkthrough, include the project name in your note.
+          </p>
+          <a
+            className="contact-walkthrough-link"
+            href={`mailto:${site.links.email}?subject=${encodeURIComponent("Technical walkthrough")}`}
+          >
+            Request a technical walkthrough <span aria-hidden="true">↗</span>
+          </a>
           <div className="contact-secondary-links">
             <a href={site.links.github} {...external}>
               GitHub

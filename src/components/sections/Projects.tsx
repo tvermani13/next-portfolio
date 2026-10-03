@@ -1,34 +1,19 @@
-import Image from "next/image";
-
-import { projects } from "@/content/config/projects";
-
-const external = { target: "_blank" as const, rel: "noopener noreferrer" };
-
-const visualCopy = {
-  simulator: { left: "SELL", right: "SBLOC", footer: "Compare capital paths over time →", bars: [42, 66, 54, 82, 71] },
-  vault: { left: "ACCOUNTS", right: "PLAN", footer: "Aggregate → understand → act", bars: [70, 46, 84, 58, 76] },
-  orchestrator: { left: "ROUTE", right: "EVAL", footer: "Policies, approvals, and traces", bars: [38, 61, 78, 52, 88] },
-  market: { left: "SIGNAL", right: "SOURCE", footer: "Research without invented values", bars: [55, 73, 44, 67, 81] },
-  eval: { left: "BASELINE", right: "PLANNER", footer: "Quality up; latency measured", bars: [49, 62, 57, 76, 69] },
-} as const;
-
-function ProjectVisual({ visual }: Readonly<{ visual: keyof typeof visualCopy }>) {
-  const copy = visualCopy[visual];
-  return (
-    <div className="simulator-visual" aria-hidden="true">
-      <div className="simulator-heading">
-        <span>{copy.left}</span>
-        <span>{copy.right}</span>
-      </div>
-      <div className="simulator-bars">
-        {copy.bars.map((height, index) => <span key={`${visual}-${index}`} style={{ height: `${height}%` }} />)}
-      </div>
-      <p>{copy.footer}</p>
-    </div>
-  );
-}
+import { ProjectCard } from "@/components/projects/ProjectCard";
+import { ShowcaseCard } from "@/components/projects/ShowcaseCard";
+import {
+  getPublishablePrivateProjects,
+  getPublishableProjects,
+  getPublishableShowcaseProjects,
+  getSelectedProjects,
+} from "@/lib/projects";
+import { withBasePath } from "@/lib/paths";
 
 export function Projects() {
+  const selectedProjects = getSelectedProjects();
+  const privateProjects = getPublishablePrivateProjects();
+  const showcases = getPublishableShowcaseProjects();
+  const hasPublishedProjects = getPublishableProjects().length > 0 || showcases.length > 0;
+
   return (
     <section id="work" className="page-section work-section" aria-labelledby="work-title">
       <div className="site-shell">
@@ -41,56 +26,44 @@ export function Projects() {
         </header>
 
         <div className="project-grid">
-          {projects.map((project) => {
-            const hasLinks = Boolean(project.links.demo || project.links.github);
-
-            return (
-              <article
-                key={project.slug}
-                className={`project-card${project.featured ? " project-card-featured" : ""}`}
-              >
-                <div className={`project-visual project-visual-${project.visual}`}>
-                  {project.image ? (
-                    <Image
-                      src={project.image}
-                      alt={`Preview for ${project.title}`}
-                      fill
-                      sizes={project.featured ? "(min-width: 900px) 60vw, 100vw" : "(min-width: 900px) 32vw, 100vw"}
-                    />
-                  ) : (
-                    <ProjectVisual visual={project.visual} />
-                  )}
-                  <span className="project-number">{project.number}</span>
-                </div>
-
-                <div className="project-body">
-                  <p className="project-kicker">{project.kicker}</p>
-                  <h3>{project.title}</h3>
-                  <p className="project-summary">{project.summary}</p>
-                  <ul className="tag-list" aria-label="Technologies used">
-                    {project.tags.map((tag) => (
-                      <li key={tag}>{tag}</li>
-                    ))}
-                  </ul>
-                  {hasLinks && (
-                    <div className="project-links">
-                      {project.links.demo && (
-                        <a href={project.links.demo} {...external}>
-                          View live <span aria-hidden="true">↗</span>
-                        </a>
-                      )}
-                      {project.links.github && (
-                        <a href={project.links.github} {...external}>
-                          Source <span aria-hidden="true">↗</span>
-                        </a>
-                      )}
-                    </div>
-                  )}
-                </div>
-              </article>
-            );
-          })}
+          {selectedProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} showNumber />
+          ))}
         </div>
+
+        {showcases.length > 0 && (
+          <section className="private-showcase-section" aria-labelledby="private-showcase-title">
+            <h2 id="private-showcase-title">Private projects</h2>
+            <p>What the projects address, my contribution, and their potential value. Request a walkthrough to continue the conversation.</p>
+            <div className="project-grid private-showcase-grid">
+              {showcases.map((project) => <ShowcaseCard key={project.slug} project={project} />)}
+            </div>
+          </section>
+        )}
+
+        {privateProjects.length > 0 && (
+          <section className="private-project-list" aria-labelledby="private-projects-title">
+            <h3 id="private-projects-title">Private project case studies</h3>
+            <ul>
+              {privateProjects.map((project) => (
+                <li key={project.slug}>
+                  <a href={withBasePath(`/projects/${project.slug}`)}>
+                    {project.title} <span aria-hidden="true">→</span>
+                  </a>
+                  <span>Source code is private.</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
+
+        {hasPublishedProjects && (
+          <p className="project-index-link">
+            <a href={withBasePath("/projects")}>
+              Browse the project showcase <span aria-hidden="true">→</span>
+            </a>
+          </p>
+        )}
       </div>
     </section>
   );

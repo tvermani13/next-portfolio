@@ -1,5 +1,11 @@
 # Portfolio Redesign Plan — "Quiet Precision"
 
+> **Historical proposal — not the active design system.** The current application
+> styles and responsive behavior are maintained in `src/app/globals.css`. This
+> document predates the current implementation; its font, color, and markup
+> instructions are not current requirements. Follow the active source styles for
+> new work. No full-site redesign is part of the recruiter showcase scope.
+
 > Handoff spec for implementing a full visual redesign of this portfolio.
 > Scope: **reskin + markup simplification only.** No information-architecture changes,
 > no copy changes, no data-layer changes. Section order stays:
