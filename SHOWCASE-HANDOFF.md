@@ -2,6 +2,13 @@
 
 Reviewed and implemented: 2026-10-01
 
+Latest content update: 2026-10-04, prepared for the authorized publication
+workflow. The owner confirmed sole development of the private projects with
+AI coding assistance, and that
+Liquidity Optimizer's functionality is now part of Smart Vault. There is no
+standalone Liquidity Optimizer entry. The owner will develop the flagship case
+study; that work has not been started by this agent.
+
 Private-project card expansion: 2026-10-02. Resumed at the owner's request on
 2026-10-03; **local implementation and validation complete.**
 Publication was authorized on October 3 after local validation. The historical
@@ -46,14 +53,13 @@ backend request, or activity-integration change.
 - Hearthline: personal contribution, dates, relationship between the public
   demo and full application, and which architecture details are approved for
   recruiter-facing copy.
-- Private-project full case studies: detailed personal contribution,
-  collaborators, maturity, dates, evaluation results, and approved technical
-  depth still need confirmation. The concise cards added on October 2 use
-  documentation-backed scope and a narrow contributor role; they do not claim
-  sole ownership, adoption, measured impact, or production status.
-- Liquidity Optimizer: confirm whether it is a standalone project (and identify
-  its documentation) or Smart Vault's existing liquidity-planning feature. Its
-  safe draft remains unpublished and absent from generated site content.
+- Private-project full case studies: detailed design decisions, maturity,
+  dates, evaluation results, and approved technical depth still need
+  confirmation. The owner confirmed on October 4 that they are the sole human
+  developer, with assistance from Claude, Cursor, and Codex. The cards identify
+  that role without claiming adoption, measured impact, or production status.
+- Liquidity Optimizer: resolved on October 4. Its functionality has evolved
+  into Smart Vault; the standalone draft has been removed from the catalog.
 - Media: reviewed screenshots, diagram approvals, video destination, and any
   transcripts. No project screenshot or video was added.
 - TokenSmith: reproduction prerequisites and rights/approval for the benchmark
@@ -280,3 +286,46 @@ production deployment and live-content verification. The PR includes the
 existing uncommitted case-study/catalog foundation that the new cards require.
 No private candidate repository content, credentials, generated export, or
 local QA screenshot is included in the commit.
+
+## October 4: owner-confirmed role and consolidated project scope
+
+The October 3 release was committed and merged through PR #3 as `c69bfd3`.
+Production deployment and the five live cards were verified at that time. The
+changes in this section are subsequent content corrections prepared for release
+through the same authorized Astra review and pull-request workflow.
+
+Source: the owner's October 4 message in this chat. The owner confirmed they
+are the sole developer of the private repositories, aside from Claude, Cursor,
+and Codex assistance. Role evidence now records this dated owner confirmation
+separately from the October 2 documentation review and commit-author metadata.
+All five cards use “Sole developer (AI-assisted)” and describe the documented
+application work as “Built” rather than “Contributed to.” This is a developer
+role confirmation, not an inference about legal ownership or business outcomes.
+
+The owner also confirmed that Smart Vault has incorporated Liquidity
+Optimizer's functionality. Smart Vault's description and contribution now
+explicitly mention liquidity planning, with a separate dated owner-confirmed
+scope reference. The `liquidity-optimizer` draft and its pending question were
+removed from the catalog. Historical October 2/3 references to the withheld
+draft remain as records of those earlier checks, not outstanding questions.
+
+The owner will work on the flagship case study (step 2). No new detailed case
+study, technical decision, metric, screenshot, architecture diagram, demo,
+video, or project detail route was added. Lifecycle uncertainties and the
+inactive Prediction Arb Bot status are unchanged. No private repository was
+inspected or modified for this update.
+
+October 4 validation: ESLint, TypeScript, the catalog/card validator with 14
+negative eligibility scenarios, and a fresh credential-blanked `/portfolio`
+Webpack static export passed. Owner-confirmed role references were checked for
+all five cards. The standalone draft is absent from the catalog; TokenSmith
+remains the only generated project detail. The original selected ordering and
+email-only walkthrough links are preserved.
+
+The Astra verifier re-reviewed the October 4 incremental corrections and
+reported no blocking findings. Its checks confirmed accurate role wording,
+dated owner evidence, documented contribution scope, consolidated Smart Vault
+functionality, and preserved ordering, disclosures, CTAs, and detail exclusions.
+It checked metadata and both generated pages without re-inspecting private
+repositories or running a new browser session. Root's generated-HTML checks
+confirmed five rendered role labels on each page and the unchanged detail route.

@@ -1,6 +1,6 @@
 # Portfolio site runbook
 
-Last reviewed: 2026-10-03
+Last reviewed: 2026-10-04
 
 ## Current state
 
@@ -136,6 +136,7 @@ claims.
 4. Confirm the production deployment is Ready for the merge commit and that
    `/portfolio`, `/portfolio/projects`, and the TokenSmith detail return 200.
 5. Confirm the five private cards, walkthrough links, original Selected Work
-   order, and absence of Liquidity Optimizer on the live homepage and index.
+   order, and absence of a separate Liquidity Optimizer card on the live homepage
+   and index; liquidity planning belongs to Smart Vault.
    Verify `/portfolio` asset/canonical prefixes and private-detail sitemap
    exclusion. Do not describe a pending deployment as live.

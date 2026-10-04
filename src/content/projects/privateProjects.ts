@@ -1,6 +1,7 @@
 import type { EvidenceReference, ProjectMetadata } from "@/content/projects/types";
 
 const reviewedOn = "2026-10-02";
+const ownerConfirmedOn = "2026-10-04";
 
 function reviewedEvidence(slug: string): EvidenceReference[] {
   return [
@@ -16,6 +17,12 @@ function reviewedEvidence(slug: string): EvidenceReference[] {
       kind: "repository-authorship",
       confirmedOn: reviewedOn,
     },
+    {
+      id: `${slug}-developer-role`,
+      label: "Sole developer role, with AI-assisted development, confirmed by the project owner",
+      kind: "owner-confirmed",
+      confirmedOn: ownerConfirmedOn,
+    },
   ];
 }
 
@@ -29,7 +36,7 @@ export const privateProjects = [
     title: "Smart Vault",
     kicker: "Personal finance workspace",
     summary:
-      "A personal finance application that brings accounts, transactions, budgets, and planning into one workspace.",
+      "A personal finance application that brings accounts, transactions, budgets, and liquidity planning into one workspace.",
     tags: [],
     featured: false,
     visual: "overview",
@@ -38,15 +45,23 @@ export const privateProjects = [
     source: { kind: "private" },
     screenshots: [],
     video: { state: "unavailable" },
-    evidence: reviewedEvidence("smart-vault"),
+    evidence: [
+      ...reviewedEvidence("smart-vault"),
+      {
+        id: "smart-vault-liquidity",
+        label: "Liquidity Optimizer functionality incorporated into Smart Vault, confirmed by the project owner",
+        kind: "owner-confirmed",
+        confirmedOn: ownerConfirmedOn,
+      },
+    ],
     showcase: {
       publication: "publishable",
       problem: "Financial activity and upcoming obligations can be difficult to review across separate accounts and tools.",
-      contribution: "Contributed to the application’s interface and backend for reviewing finances and planning ahead.",
-      role: { label: "Software contributor", evidenceIds: ["smart-vault-contribution"] },
+      contribution: "Built the finance interface and backend, including liquidity-planning functionality.",
+      role: { label: "Sole developer (AI-assisted)", evidenceIds: ["smart-vault-developer-role"] },
       potentialValue: "Could make it easier to understand cash needs and financial priorities in one place.",
-      evidenceIds: ["smart-vault-scope"],
-      reviewedOn,
+      evidenceIds: ["smart-vault-scope", "smart-vault-liquidity"],
+      reviewedOn: ownerConfirmedOn,
     },
   },
   {
@@ -68,11 +83,11 @@ export const privateProjects = [
     showcase: {
       publication: "publishable",
       problem: "Personal AI tools need a consistent way to coordinate work while keeping sensitive actions under human control.",
-      contribution: "Contributed to the orchestration backend and operator dashboard, including documented approval workflows.",
-      role: { label: "Software contributor", evidenceIds: ["life-orchestrator-contribution"] },
+      contribution: "Built the orchestration backend and operator dashboard, including human-approval workflows.",
+      role: { label: "Sole developer (AI-assisted)", evidenceIds: ["life-orchestrator-developer-role"] },
       potentialValue: "Could help people supervise assistant activity and keep permission decisions consistent across tools.",
       evidenceIds: ["life-orchestrator-scope"],
-      reviewedOn,
+      reviewedOn: ownerConfirmedOn,
     },
   },
   {
@@ -101,11 +116,11 @@ export const privateProjects = [
     showcase: {
       publication: "publishable",
       problem: "Researching a company can mean moving between quote pages, news, and separate lists of companies to follow.",
-      contribution: "Contributed to the market-research application and its interface for reviewing research and personal watchlists.",
-      role: { label: "Software contributor", evidenceIds: ["kinscape-contribution"] },
+      contribution: "Built the market-research application and its interface for company research and personal watchlists.",
+      role: { label: "Sole developer (AI-assisted)", evidenceIds: ["kinscape-developer-role"] },
       potentialValue: "Could help users organize market research around the companies they follow, with watchlists tied to their account.",
       evidenceIds: ["kinscape-scope", "kinscape-identity"],
-      reviewedOn,
+      reviewedOn: ownerConfirmedOn,
     },
   },
   {
@@ -127,11 +142,11 @@ export const privateProjects = [
     showcase: {
       publication: "publishable",
       problem: "Working with a personal AI system needs a usable interface for conversations and supervised actions.",
-      contribution: "Contributed to the chat application, including its documented conversation-management interface.",
-      role: { label: "Software contributor", evidenceIds: ["home-llm-contribution"] },
+      contribution: "Built the chat application, including conversation management, model selection, and approval prompts.",
+      role: { label: "Sole developer (AI-assisted)", evidenceIds: ["home-llm-developer-role"] },
       potentialValue: "Could make a personal AI system easier to use while keeping approval decisions visible.",
       evidenceIds: ["home-llm-scope"],
-      reviewedOn,
+      reviewedOn: ownerConfirmedOn,
     },
   },
   {
@@ -161,33 +176,11 @@ export const privateProjects = [
     showcase: {
       publication: "publishable",
       problem: "Related prediction markets can be difficult to compare when exchanges describe and price events differently.",
-      contribution: "Contributed to the research bot and API for reviewing market comparisons.",
-      role: { label: "Software contributor", evidenceIds: ["prediction-arb-bot-contribution"] },
+      contribution: "Built the research bot and API for reviewing market comparisons.",
+      role: { label: "Sole developer (AI-assisted)", evidenceIds: ["prediction-arb-bot-developer-role"] },
       potentialValue: "Could support discussion of market-data comparison and research limitations. No live trading access or returns are presented.",
       evidenceIds: ["prediction-arb-bot-scope", "prediction-arb-bot-inactive"],
-      reviewedOn,
-    },
-  },
-  {
-    slug: "liquidity-optimizer",
-    catalogOrder: 8,
-    title: "Liquidity Optimizer",
-    kicker: "Project scope awaiting confirmation",
-    summary: "A potential showcase entry whose scope and relationship to Smart Vault need confirmation.",
-    tags: [],
-    featured: false,
-    visual: "overview",
-    publication: "unpublished",
-    lifecycle: "needs-confirmation",
-    source: { kind: "unconfirmed" },
-    screenshots: [],
-    video: { state: "unavailable" },
-    evidence: [],
-    showcase: {
-      publication: "unpublished",
-      pendingQuestions: [
-        "Is this a standalone project or Smart Vault’s liquidity-planning feature?",
-      ],
+      reviewedOn: ownerConfirmedOn,
     },
   },
 ] satisfies ProjectMetadata[];

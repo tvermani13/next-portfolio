@@ -58,11 +58,13 @@ project detail routes unpublished until their case studies are complete.
 
 Concise private-project cards have a separate readiness gate. Smart Vault, Life
 Orchestrator, Kinscape, Home LLM, and the inactive Prediction Arb Bot appear on
-the homepage and `/projects` with documentation-backed scope, a narrow
-contributor role, potential value, a private-source disclosure, and a walkthrough
-email link. These cards expose no project source links, media, live integrations,
-or measured outcomes. Liquidity Optimizer remains withheld pending scope
-confirmation. Publishing a card does not enable a full case-study route.
+the homepage and `/projects` with documentation-backed scope, an owner-confirmed
+sole developer role (AI-assisted), potential value, a private-source disclosure,
+and a walkthrough email link. These cards expose no project source links,
+media, live integrations,
+or measured outcomes. Liquidity Optimizer's functionality is included in Smart
+Vault; it has no separate catalog entry. Publishing a card does not enable a
+full case-study route.
 
 Every detail page provides a project-specific technical-walkthrough email link.
 The contact section also has a general walkthrough request. These are `mailto:`
