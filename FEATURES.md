@@ -1,6 +1,6 @@
 # next-portfolio — Feature Catalog
 
-Last reviewed: 2026-10-03
+Last reviewed: 2026-10-04
 
 README: [`README.md`](README.md). Runbook: [`RUNBOOK.md`](RUNBOOK.md).
 Implementation handoff: [`SHOWCASE-HANDOFF.md`](SHOWCASE-HANDOFF.md).
@@ -51,8 +51,10 @@ Smart Vault, Life Orchestrator, Kinscape, Home LLM, and Prediction Arb Bot. A
 separate showcase gate requires complete copy, dated scope and role evidence,
 private-source metadata, and no demo, source link, or media. The cards qualify
 potential value and do not report adoption, production status, returns, or
-measured impact. Prediction Arb Bot is labeled inactive. Liquidity Optimizer is
-withheld. Only TokenSmith currently has a generated detail route.
+measured impact. All five identify the owner-confirmed sole developer role with
+AI assistance. Prediction Arb Bot is labeled inactive. Liquidity Optimizer's
+functionality belongs to Smart Vault; it has no separate catalog entry. Only
+TokenSmith currently has a generated detail route.
 
 Unpublished records are not confidentiality controls. Keep all repository
 content and assets safe to publish because the portfolio repository is public.
